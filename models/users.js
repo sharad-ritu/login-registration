@@ -19,4 +19,4 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Login-Registration', userSchema);
+module.exports = mongoose.model('Users', userSchema);
