@@ -1,18 +1,23 @@
 const express = require('express');
 const app = express();
-const {engine} = require('express-handlebars'); 
+const {create} = require('express-handlebars');
 require('dotenv').config();
 
 const connectDb = require('./db/connect');
 const routes = require('./routes/routes');
+const errorhandler= require('./middleware/error-handler');
 
 app.use(express.json());
 // Set up Handlebars as the template engine
-app.engine('handlebars', engine());
+const hbs = create({ /* config */ });
+
+// Register `hbs.engine` with the Express app.
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 
-app.use('/auth', routes);
+app.use('/', routes);
+app.use(errorhandler);
 
 const port = 5000;
 
