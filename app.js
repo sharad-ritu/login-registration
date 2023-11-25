@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const {create} = require('express-handlebars');
+const {engine} = require('express-handlebars');
 require('dotenv').config();
 
 const connectDb = require('./db/connect');
@@ -8,15 +8,18 @@ const routes = require('./routes/routes');
 const errorhandler= require('./middleware/error-handler');
 
 app.use(express.json());
-// Set up Handlebars as the template engine
-const hbs = create({ /* config */ });
 
-// Register `hbs.engine` with the Express app.
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
+app.engine('.hbs', engine({extname: '.hbs'}));
+app.set('view engine', '.hbs');
 app.set('views', './views');
 
+// Example: Setting Content-Type header for CSS files
+app.use(express.static('public'));
+
 app.use('/', routes);
+app.get('/index', (req, res) => {
+    res.render('index', { layout: false});
+});
 app.use(errorhandler);
 
 const port = 5000;
