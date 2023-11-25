@@ -9,16 +9,15 @@ const errorhandler= require('./middleware/error-handler');
 
 app.use(express.json());
 
-app.engine('.hbs', engine({extname: '.hbs'}));
-app.set('view engine', '.hbs');
+app.engine('handlebars', engine());
+app.set('view engine', 'handlebars');
 app.set('views', './views');
 
-// Example: Setting Content-Type header for CSS files
 app.use(express.static('public'));
 
 app.use('/', routes);
 app.get('/index', (req, res) => {
-    res.render('index', { layout: false});
+    res.render('register');
 });
 app.use(errorhandler);
 
