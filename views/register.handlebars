@@ -1,23 +1,188 @@
-<div class="bg-white p-8 rounded-lg shadow-md w-96">
-    <h1 class="text-2xl font-semibold mb-4">Login</h1>
-    
-    <!-- Form -->
-    <form>
-      <!-- Username Input -->
-      <div class="mb-4">
-        <label for="username" class="block text-sm font-medium text-gray-600">Username</label>
-        <input type="text" id="username" name="username" class="mt-1 p-2 w-full border rounded-md">
-      </div>
+<div class="bg-white p-8 pt-4 rounded-lg border-t-4 border-pink-500" style="width: 30rem; box-shadow: 1px 10px 10px 7px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);">
+  
+        <h1 class="text-4xl font-semibold mb-5 text-center">Registration Form</h1>
+        <form id="registrationForm" action="/register" method="post" onsubmit= "return validateForm()" novalidate>
+            <div class="mb-4">
+                <label for="username" class="block text-md font-medium text-gray-600">Username</label>
+                <input type="text" id="username" name="username" class="mt-1 p-2 w-full border-2 bg-gray-100 rounded-lg focus:outline-none focus:border-blue-700"
+                    oninput="validateInput(this)" value="{{username}}">
+                {{!-- <span id="usernameError" class="h-12 text-red-500 text-xs"></span> --}}
+                <p id="usernameError" class="h-6 text-red-600 text-sm">{{errors.username}}</p>
+            </div>
 
-      <!-- Password Input -->
-      <div class="mb-4">
-        <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
-        <input type="password" id="password" name="password" class="mt-1 p-2 w-full border rounded-md">
-      </div>
+            <div class="mb-4">
+                <label for="password" class="block text-md font-medium text-gray-600">Password</label>
+                <input type="password" id="password" name="password" class="mt-1 p-2 w-full border-2 bg-gray-100 rounded-lg focus:outline-none focus:border-blue-700"
+                    oninput="validateInput(this)" value="{{password}}">
+                {{!-- <span id="passwordError" class="text-red-500 text-xs"></span> --}}
+                <p id="passwordError" class="h-6 text-red-600 text-xs"></p>
+            </div>
 
-      <!-- Submit Button -->
-      <button type="submit" class="w-full bg-red-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">
-        Login
-      </button>
-    </form>
-  </div>
+            <div class="mb-4">
+                <label for="email" class="block text-md font-medium text-gray-600">Email</label>
+                <input type="email" id="email" name="email" class="mt-1 p-2 w-full border-2 bg-gray-100 rounded-lg focus:outline-none focus:border-blue-700"
+                    oninput="validateInput(this)" value="{{email}}">
+                {{!-- <span id="emailError" class="text-red-500 text-xs"></span> --}}
+                <p id="emailError" class="h-6 text-red-600 text-sm">{{errors.email}}</p>
+            </div>
+
+            <div class="mb-4">
+                <label for="age" class="block text-md font-medium text-gray-600">Age</label>
+                <input type="number" id="age" name="age" class="mt-1 p-2 w-full border-2 bg-gray-100 rounded-lg focus:outline-none focus:border-blue-700"
+                    oninput="validateInput(this)" value="{{age}}">
+                {{!-- <span id="ageError" class="text-red-500 text-xs"></span> --}}
+                <p id="ageError" class="h-6 text-red-600 text-sm"></p>
+            </div>
+
+            <button type="submit" class="bg-purple-600 text-white text-lg px-6 py-3 rounded-lg ransition duration-300 ease-in-out hover:bg-pink-400">Register</button>
+            <a href="/" class="ml-12 text-lg underline hover:text-purple-600">Already have an account?</a>
+        </form>
+    </div>
+
+    <script>
+
+      function validateInput(input) {
+        if (input.id == 'username') {
+          validateUsername(input);
+        }
+
+        if (input.id == 'password') {
+          validatePassword(input);
+        }
+
+        if (input.id == 'email') {
+          validateEmail(input);
+        }
+
+        if (input.id == 'age') {
+          validateAge(input);
+        }
+
+        function validateUsername(input) {
+          console.log(input.id);
+          const username = input.value.trim();
+          const hasAlphabet = /[a-zA-Z]/.test(username);
+          const hasNumber = /\d/.test(username);
+          const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(username); // Add more special characters as needed
+          const errors = [];
+
+          if (!hasAlphabet) {
+              errors.push('Must contain at least one alphabet.');
+          }
+
+          if (!hasNumber) {
+              errors.push('Must contain at least one number.');
+          }
+
+          if (hasSpecialCharacter) {
+              errors.push('Must not contain special characters.');
+          }
+
+          if (username.length >= 16) {
+              errors.push('Must be less than 16 characters.');
+          }
+
+          const isValid = errors.length === 0;
+
+          if (isValid) {
+              input.className = input.className.replace(/\b(focus:border-blue-700|focus:border-red-600)\b/g, 'focus:border-green-500');
+              document.getElementById('usernameError').innerText = '';
+          } else {
+              input.className = input.className.replace(/\b(focus:border-blue-700|focus:border-green-500)\b/g, 'focus:border-red-600');
+              document.getElementById('usernameError').innerText = errors.join(' ');
+          }
+      }
+      
+        function validatePassword(input) {
+          const password = input.value.trim();
+
+          const hasAlphabet = /[a-zA-Z]/.test(password);
+          const hasNumber = /\d/.test(password);
+          const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+          const errors = [];
+
+          if (!hasAlphabet) {
+              errors.push('Must contain at least one alphabet.');
+          }
+
+          if (!hasNumber) {
+              errors.push('Must contain at least one number.');
+          }
+
+          if (!hasSpecialCharacter) {
+              errors.push('Must contain special characters.');
+          }
+
+          if (password.length < 8 || password.length > 16) {
+              errors.push('Must be between 8 and 16 characters.');
+          }
+
+          const isValid = errors.length === 0;
+
+          if (isValid) {
+              input.className = input.className.replace(/\b(focus:border-blue-700|focus:border-red-600)\b/g, 'focus:border-green-500');
+              document.getElementById('passwordError').innerText = '';
+          } else {
+              input.className = input.className.replace(/\b(focus:border-blue-700|focus:border-green-500)\b/g, 'focus:border-red-600');
+              document.getElementById('passwordError').innerText = errors.join(' ');
+          }
+      }
+      
+        function validateEmail(input) {
+        const email = input.value.trim();
+
+        const validEmail =  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email);
+        const errors = [];
+
+        if (!validEmail) {
+          errors.push('Must be a valid email.');
+        }
+
+        const isValid = errors.length === 0;
+
+        if (isValid) {
+            input.className = input.className.replace(/\b(focus:border-blue-700|focus:border-red-600)\b/g, 'focus:border-green-500');
+            document.getElementById('emailError').innerText = '';
+        } else {
+            input.className = input.className.replace(/\b(focus:border-blue-700|focus:border-green-500)\b/g, 'focus:border-red-600');
+            document.getElementById('emailError').innerText = errors.join(' ');
+        }
+      }
+      
+        function validateAge(input) {
+        const age = input.value.trim();
+
+        const errors = [];
+
+        if (age < 16 || age > 100) {
+          errors.push('Age must be between 16 and 100');
+        }
+
+        const isValid = errors.length === 0;
+
+        if (isValid) {
+            input.className = input.className.replace(/\b(focus:border-blue-700|focus:border-red-600)\b/g, 'focus:border-green-500');
+            document.getElementById('ageError').innerText = '';
+        } else {
+            input.className = input.className.replace(/\b(focus:border-blue-700|focus:border-green-500)\b/g, 'focus:border-red-600');
+            document.getElementById('ageError').innerText = errors.join(' ');
+        }
+      }
+      
+      }
+
+      function validateForm() {
+        const form = document.getElementById('registrationForm');
+        const inputs = form.querySelectorAll('input');
+
+        for (const input of inputs) {
+                validateInput(input);
+
+                // If any input has an error, do not continue
+                if (input.nextElementSibling.textContent !== '') {
+                    return false;
+                }
+            }
+      }
+    </script>

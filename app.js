@@ -6,8 +6,11 @@ require('dotenv').config();
 const connectDb = require('./db/connect');
 const routes = require('./routes/routes');
 const errorhandler= require('./middleware/error-handler');
+const trim = require('./middleware/trim');
+const { sessionMiddleware, limiter } = require('./middleware/rate-limit');
 
 app.use(express.json());
+app.use(express.urlencoded({extended:false}));
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
@@ -15,10 +18,10 @@ app.set('views', './views');
 
 app.use(express.static('public'));
 
+app.use(limiter);
+app.use(sessionMiddleware);
+app.use(trim);
 app.use('/', routes);
-app.get('/index', (req, res) => {
-    res.render('register');
-});
 app.use(errorhandler);
 
 const port = 5000;

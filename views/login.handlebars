@@ -1,0 +1,28 @@
+<div class="bg-white p-8 pt-4 rounded-lg border-t-4 border-pink-500" style="width: 30rem; box-shadow: 1px 10px 10px 7px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);">
+    <h1 class="text-4xl font-semibold mb-5 text-center">Login Form</h1>
+    <form id="loginForm" action="/" method="post" novalidate>
+        <div class="mb-4">
+            <label for="username" class="block text-md font-medium text-gray-600">Username</label>
+            <input type="text" id="username" name="username" class="mt-1 p-2 w-full border-2 bg-gray-100 rounded-lg focus:outline-none 
+            {{#if errors.invalid_user}} focus:border-red-500 {{else}} focus:border-blue-700 {{/if}}"
+                value="{{username}}">
+            <p id="usernameError" class="h-6 text-red-600 text-md">{{errors.invalid_user}}</p>
+        </div>
+
+        <div class="mb-4">
+            <label for="password" class="block text-md font-medium text-gray-600">Password</label>
+            <input type="password" id="password" name="password" class="mt-1 p-2 w-full border-2 bg-gray-100 rounded-lg focus:outline-none
+            {{#if errors.invalid_pass}} focus:border-red-500 {{else}} focus:border-blue-700 {{/if}}"
+                value="{{password}}">
+            <p id="passwordError" class="h-6 text-red-600 text-md">{{errors.invalid_pass}}</p>
+        </div>
+
+        <button type="submit" class="bg-blue-600 text-white text-lg px-6 py-3 rounded-lg transition duration-300 ease-in-out hover:bg-blue-400">Login</button>
+        <a href="/register" class="ml-4 text-md underline hover:text-purple-600">Don't have an account? Register here.</a>
+    </form>
+    <p id="passwordError" class="h-6 text-red-600 text-md mt-4">
+        {{ errors.remainingAttempts}}
+        {{ login_limit }}
+    </p>
+
+</div>
