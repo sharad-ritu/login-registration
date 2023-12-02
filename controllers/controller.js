@@ -38,6 +38,7 @@ const loginProcess = asyncWrapper(async (req, res, next) => {
         if (passwordMatch) {
             req.session.loginAttempts = 0;
             req.session.authenticated = true;
+            req.session.user_name = user.username;
             return res.status(200).render('home', { layout: false, username });
         }
     }
@@ -84,7 +85,15 @@ const logoutProcess = asyncWrapper(async (req, res, next) => {
 });
 
 const homePage = asyncWrapper(async (req, res, next) => {
-    res.status(200).render('home', { layout: false});
+    res.status(200).render('home', { layout: false, username: req.session.user_name});
+});
+
+const profilePage = asyncWrapper(async (req, res, next) => {
+    const {username} = req.params;
+    const user = await User.findOne({ username });
+    const { email, age} = user;
+    res.status(200).render('profile', { layout: false, username, email, age});
+
 });
 
 module.exports = {
@@ -93,5 +102,6 @@ module.exports = {
     registerForm, 
     registerProcess, 
     logoutProcess,
-    homePage
+    homePage,
+    profilePage
 };

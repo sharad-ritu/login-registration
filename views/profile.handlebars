@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body style="background: linear-gradient(to right, #4A00E0, #8E2DE2, #00C9FF, #92FE9D);">
+
+    <!-- Navbar -->
+    {{> navbar}}
+
+    <!-- Body Content -->
+    <div class="container max-w-md mx-auto mt-8 p-8 bg-white shadow-md rounded-md flex flex-col items-center">
+        <h1 class="text-3xl font-bold mb-4">Your Profile</h1>
+        <p>Username: {{username}}</p>
+        <p>Email: {{email}}</p>
+        <p>Age: {{age}}</p>
+
+        <!-- Buttons for update and delete -->
+        <div class="flex mt-4">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-md mr-4 hover:bg-blue-700">Change Password</button>
+            <button class="bg-green-500 text-white px-4 py-2 rounded-md mr-4 hover:bg-green-700">Edit</button>
+            <button class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700">Delete</button>
+        </div>
+    </div>
+
+</body>
+
+</html>
