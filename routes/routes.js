@@ -1,10 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-const {loginForm, loginProcess, registerForm, registerProcess} = require('../controllers/controller');
-const { limiter } = require('../middleware/rate-limit');
+const {
+    loginForm, 
+    loginProcess, 
+    registerForm, 
+    registerProcess,
+    logoutProcess,
+    homePage
+} = require('../controllers/controller');
 
-router.route('/').get(loginForm).post(loginProcess);
+const { isAuthenticated } = require('../middleware/rate-limit');
+
+router.route('/').get(isAuthenticated, homePage).post(loginProcess);
 router.route('/register').get(registerForm).post(registerProcess);
+router.route('/logout').get(isAuthenticated, logoutProcess);
 
 module.exports = router;

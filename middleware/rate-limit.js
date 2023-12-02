@@ -16,6 +16,16 @@ const sessionMiddleware = session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 },
 });
 
-module.exports = { limiter, sessionMiddleware };
+const isAuthenticated = (req, res, next) => {
+    if(req.session && req.session.authenticated) {
+        next();
+    }
+    else {
+        res.render('login');
+    }
+};
+
+module.exports = { limiter, sessionMiddleware, isAuthenticated };

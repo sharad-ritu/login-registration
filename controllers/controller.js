@@ -37,7 +37,8 @@ const loginProcess = asyncWrapper(async (req, res, next) => {
 
         if (passwordMatch) {
             req.session.loginAttempts = 0;
-            return res.status(200).render('home', { username });
+            req.session.authenticated = true;
+            return res.status(200).render('home', { layout: false, username });
         }
     }
 
@@ -72,4 +73,25 @@ const registerProcess = asyncWrapper(async (req, res, next) => {
     res.status(200).render('login');
 });
 
-module.exports = {loginForm, loginProcess, registerForm, registerProcess};
+const logoutProcess = asyncWrapper(async (req, res, next) => {
+        req.session.destroy();
+        if (!req.session) {
+            res.render('login');
+        } else {
+            // Handle the case where the session is not properly destroyed
+            res.status(500).send('Failed to destroy session');
+        }
+});
+
+const homePage = asyncWrapper(async (req, res, next) => {
+    res.status(200).render('home', { layout: false});
+});
+
+module.exports = {
+    loginForm, 
+    loginProcess, 
+    registerForm, 
+    registerProcess, 
+    logoutProcess,
+    homePage
+};
