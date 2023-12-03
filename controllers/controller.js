@@ -3,7 +3,7 @@ const asyncWrapper = require('../middleware/async');
 const bcrypt = require('bcrypt');
 
 const loginForm = asyncWrapper(async (req, res, next) => {
-    res.status(200).render('login');
+    res.status(200).render('login', {title: 'Login Page'});
 });
 
 const loginProcess = asyncWrapper(async (req, res, next) => {
@@ -64,7 +64,7 @@ const loginProcess = asyncWrapper(async (req, res, next) => {
 });
 
 const registerForm = asyncWrapper(async (req, res, next) => {
-    res.status(200).render('register');
+    res.status(200).render('register', {title: 'Register Page'});
 });
 
 const registerProcess = asyncWrapper(async (req, res, next) => {
@@ -96,6 +96,44 @@ const profilePage = asyncWrapper(async (req, res, next) => {
 
 });
 
+const changePasswordForm = asyncWrapper(async (req, res, next) => {
+    res.status(200).render('change_pass', { layout: false, username: req.session.user_name});
+});
+
+const changePasswordProcess = asyncWrapper(async (req, res, next) => {
+    const {oldPassword, newPassword} = req.body;
+    const {username} = req.params;
+
+    const user = await User.findOne({ username });
+    if (user) {
+        const matchOldPassword = await bcrypt.compare(oldPassword, user.password);
+        if (matchOldPassword) {
+            if (oldPassword === newPassword){
+                return res.status(400).render('change_pass', { layout: false, newPassError: 'New Password cannot be same as Old Password.', username});
+            }
+            else {
+                const hashedPassword = await bcrypt.hash(newPassword, 10);
+                const user = await User.findOneAndUpdate(
+                    { username: username},
+                    {$set: { password: hashedPassword}},
+                    {new: true, runValidators: true}
+                );
+
+                if (!user) {
+                    next('Something went wrong!');
+                }
+                return res.redirect('/logout');
+            }
+        }
+        else {
+            return res.status(400).render('change_pass', { layout: false, oldPassError: 'Please enter correct password.', username});
+        }
+    }
+    else {
+        next('Cannot Find the user');
+    }
+});
+
 module.exports = {
     loginForm, 
     loginProcess, 
@@ -103,5 +141,7 @@ module.exports = {
     registerProcess, 
     logoutProcess,
     homePage,
-    profilePage
+    profilePage,
+    changePasswordForm,
+    changePasswordProcess
 };

@@ -4,7 +4,7 @@ function validateInput(input) {
       validateUsername(input);
     }
 
-    if (input.id == 'password') {
+    if (input.id == 'password' || input.id == 'newPassword') {
       validatePassword(input);
     }
 

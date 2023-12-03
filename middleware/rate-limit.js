@@ -24,7 +24,7 @@ const isAuthenticated = (req, res, next) => {
         next();
     }
     else {
-        res.render('login');
+        res.render('login', {title: 'Login Page'});
     }
 };
 
