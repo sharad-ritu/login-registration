@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Page</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body style="background: linear-gradient(to right, #4A00E0, #8E2DE2, #00C9FF, #92FE9D);">
+
+    <!-- Navbar -->
+    {{> navbar}}
+
+<div class="flex justify-center mt-20">
+    <div class="bg-white p-8 pt-4 rounded-lg border-t-4 border-pink-500" style="width: 30rem; box-shadow: 1px 10px 10px 7px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);">
+
+        <h1 class="text-4xl font-semibold mb-5 text-center">Edit Form</h1>
+        <form id="editForm" novalidate>
+            <div class="mb-4">
+                <label for="username" class="block text-md font-medium text-gray-600">Username</label>
+                <input type="text" id="username" name="username" class="mt-1 p-2 w-full border-2 bg-gray-100 rounded-lg focus:outline-none focus:border-blue-700"
+                    oninput="validateInput(this)" value="{{username}}">
+                {{!-- <span id="usernameError" class="h-12 text-red-500 text-xs"></span> --}}
+                <p id="usernameError" class="h-6 text-red-600 text-sm">{{errors.username}}</p>
+            </div>
+
+            <div class="mb-4">
+                <label for="email" class="block text-md font-medium text-gray-600">Email</label>
+                <input type="email" id="email" name="email" class="mt-1 p-2 w-full border-2 bg-gray-100 rounded-lg focus:outline-none focus:border-blue-700"
+                    oninput="validateInput(this)" value="{{email}}">
+                {{!-- <span id="emailError" class="text-red-500 text-xs"></span> --}}
+                <p id="emailError" class="h-6 text-red-600 text-sm">{{errors.email}}</p>
+            </div>
+
+            <div class="mb-4">
+                <label for="age" class="block text-md font-medium text-gray-600">Age</label>
+                <input type="number" id="age" name="age" class="mt-1 p-2 w-full border-2 bg-gray-100 rounded-lg focus:outline-none focus:border-blue-700"
+                    oninput="validateInput(this)" value="{{age}}">
+                {{!-- <span id="ageError" class="text-red-500 text-xs"></span> --}}
+                <p id="ageError" class="h-6 text-red-600 text-sm"></p>
+            </div>
+
+            <button type="submit" class="bg-purple-600 text-white text-lg px-6 py-3 rounded-lg transition duration-300 ease-in-out hover:bg-pink-400">Save</button>
+        </form>
+
+        <p id="editError" class="h-6 text-red-600 text-md mt-4"></p>
+    </div>
+</div>
+<script src="/js/check.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    const form = document.getElementById('editForm');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = "{{username}}";
+        const user = form.username.value;
+        const email = form.email.value;
+        const age = form.age.value;
+        const errorField = document.getElementById('editError');
+
+        if (user === "{{username}}" || email === "{{email}}")
+        {
+            return errorField.innerHTML = 'Please Enter new username and email';
+        }
+
+        try {
+            const response = await axios.patch(`/edit/${username}`, {user, email, age});
+            if (response.status === 200) {
+                alert('Edit successful!    You will be be redirected to Login Page.');
+
+                window.location.href = '/logout';
+            } else if (response.status === 400) {
+                // Handle unsuccessful response
+                alert('Edit failed!');
+            }
+        }
+        catch (error) {
+            errorField.innerHTML = 'Error! Please try again. || Remember: Username and Email must be unique!';
+        }
+    });
+    
+</script>
+</body>
+
+</html>

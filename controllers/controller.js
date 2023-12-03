@@ -113,13 +113,13 @@ const changePasswordProcess = asyncWrapper(async (req, res, next) => {
             }
             else {
                 const hashedPassword = await bcrypt.hash(newPassword, 10);
-                const user = await User.findOneAndUpdate(
+                const up_user = await User.findOneAndUpdate(
                     { username: username},
                     {$set: { password: hashedPassword}},
                     {new: true, runValidators: true}
                 );
 
-                if (!user) {
+                if (!up_user) {
                     next('Something went wrong!');
                 }
                 return res.redirect('/logout');
@@ -134,6 +134,32 @@ const changePasswordProcess = asyncWrapper(async (req, res, next) => {
     }
 });
 
+const editForm = asyncWrapper(async (req, res, next) => {
+    const {username} = req.params;
+    const user = await User.findOne({ username });
+    const { email, age} = user;
+    res.status(200).render('edit', { layout: false, username: req.session.user_name, email, age});
+});
+
+const editProcess = asyncWrapper(async (req, res, next) => {
+    const { username } = req.params;
+    if ( username != req.session.user_name) {
+        return res.status(400).json({ error: 'Error! Please try again.'});
+    }
+    const { user, email, age } = req.body;
+
+    if ( user === '' || email === '' || age === '' ) {
+        return res.status(400).json({ error: 'Error! Please input values.' });
+    }
+
+    const up_user = await User.findOneAndUpdate(
+        { username: username},
+        {$set: { username: user , email: email, age: age }},
+        {new: true, runValidators: true}
+    );
+    res.status(200).json({ message: 'Edit successful' });
+});
+
 module.exports = {
     loginForm, 
     loginProcess, 
@@ -143,5 +169,7 @@ module.exports = {
     homePage,
     profilePage,
     changePasswordForm,
-    changePasswordProcess
+    changePasswordProcess,
+    editForm,
+    editProcess
 };

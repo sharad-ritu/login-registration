@@ -17,7 +17,6 @@ function validateInput(input) {
     }
 
     function validateUsername(input) {
-      console.log(input.id);
       const username = input.value.trim();
       const hasAlphabet = /[a-zA-Z]/.test(username);
       const hasNumber = /\d/.test(username);
