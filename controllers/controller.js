@@ -160,6 +160,15 @@ const editProcess = asyncWrapper(async (req, res, next) => {
     res.status(200).json({ message: 'Edit successful' });
 });
 
+const deleteProcess = asyncWrapper(async (req, res, next) => {
+    const { username : user } = req.params;
+    const dl_user = await User.findOneAndDelete({ username: user });
+    if (!dl_user) {
+        return res.status(400).json({ error: 'User not found' });
+    }
+    res.status(200).render('register');
+});
+
 module.exports = {
     loginForm, 
     loginProcess, 
@@ -171,5 +180,6 @@ module.exports = {
     changePasswordForm,
     changePasswordProcess,
     editForm,
-    editProcess
+    editProcess,
+    deleteProcess
 };

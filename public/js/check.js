@@ -142,3 +142,17 @@ function validateInput(input) {
             }
         }
   }
+
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById('password');
+        var togglePassword = document.getElementById('togglePassword');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            togglePassword.innerHTML = '<i class="fa-solid fa-eye-slash"></i>'; // Font Awesome eye-slash icon
+        } else {
+            passwordInput.type = 'password';
+            togglePassword.innerHTML = '<i class="fa-solid fa-eye"></i>'; // Font Awesome eye icon
+        }
+    }
+

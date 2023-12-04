@@ -12,7 +12,8 @@ const {
     changePasswordForm,
     changePasswordProcess,
     editForm,
-    editProcess
+    editProcess,
+    deleteProcess
 } = require('../controllers/controller');
 
 const { isAuthenticated } = require('../middleware/rate-limit');
@@ -23,6 +24,7 @@ router.route('/logout').get(isAuthenticated, logoutProcess);
 router.route('/profile/:username').get(isAuthenticated, profilePage);
 router.route('/changePassword/:username').get(isAuthenticated, changePasswordForm).post(changePasswordProcess);
 router.route('/edit/:username').get(isAuthenticated, editForm).patch(editProcess);
+router.route('/delete/:username').get(isAuthenticated, deleteProcess);
 
 
 module.exports = router;

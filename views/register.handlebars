@@ -1,5 +1,5 @@
 <div class="bg-white p-8 pt-4 rounded-lg border-t-4 border-pink-500" style="width: 30rem; box-shadow: 1px 10px 10px 7px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);">
-  
+
         <h1 class="text-4xl font-semibold mb-5 text-center">Registration Form</h1>
         <form id="registrationForm" action="/register" method="post" onsubmit= "return validateForm()" novalidate>
             <div class="mb-4">
@@ -12,10 +12,13 @@
 
             <div class="mb-4">
                 <label for="password" class="block text-md font-medium text-gray-600">Password</label>
-                <input type="password" id="password" name="password" class="mt-1 p-2 w-full border-2 bg-gray-100 rounded-lg focus:outline-none focus:border-blue-700"
-                    oninput="validateInput(this)" value="{{password}}">
-
-                {{!-- <span id="passwordError" class="text-red-500 text-xs"></span> --}}
+                <div class="relative">
+                    <input type="password" id="password" name="password" class="mt-1 p-2 w-full border-2 bg-gray-100 rounded-lg focus:outline-none focus:border-blue-700"
+                        oninput="validateInput(this)" value="{{password}}" autocomplete="new-password">
+                    <span id="togglePassword" class="absolute top-3 right-3 cursor-pointer" onclick="togglePasswordVisibility()">
+                        <i class="fa-solid fa-eye"></i>
+                    </span>
+                </div>
                 <p id="passwordError" class="h-6 text-red-600 text-xs"></p>
             </div>
 
