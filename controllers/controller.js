@@ -1,6 +1,7 @@
 const User = require('../models/users');
 const asyncWrapper = require('../middleware/async');
 const bcrypt = require('bcrypt');
+const { request } = require('express');
 
 const loginForm = asyncWrapper(async (req, res, next) => {
     res.status(200).render('login', {title: 'Login Page'});
@@ -71,7 +72,7 @@ const registerProcess = asyncWrapper(async (req, res, next) => {
     const { username, password, email, age} = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({username, password: hashedPassword, email, age});
-    res.status(200).render('login');
+    res.status(200).render('login', { successMsg: 'Registration Successful! Login Now'});
 });
 
 const logoutProcess = asyncWrapper(async (req, res, next) => {
@@ -122,7 +123,8 @@ const changePasswordProcess = asyncWrapper(async (req, res, next) => {
                 if (!up_user) {
                     next('Something went wrong!');
                 }
-                return res.redirect('/logout');
+                req.session.destroy();
+                return res.status(200).render('login', { successMsg: 'Password changed successfully!' });
             }
         }
         else {
@@ -166,7 +168,8 @@ const deleteProcess = asyncWrapper(async (req, res, next) => {
     if (!dl_user) {
         return res.status(400).json({ error: 'User not found' });
     }
-    res.status(200).render('register');
+    req.session.destroy();
+    res.status(200).render('register', {successMsg: 'Account Deleted Successfully!'});
 });
 
 module.exports = {

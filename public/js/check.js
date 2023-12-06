@@ -143,16 +143,21 @@ function validateInput(input) {
         }
   }
 
-    function togglePasswordVisibility() {
-        var passwordInput = document.getElementById('password');
-        var togglePassword = document.getElementById('togglePassword');
-
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            togglePassword.innerHTML = '<i class="fa-solid fa-eye-slash"></i>'; // Font Awesome eye-slash icon
+    function togglePasswordVisibility(passwordInputId, togglePasswordId) {
+        var passwordInput = document.getElementById(passwordInputId);
+        var togglePassword = document.getElementById(togglePasswordId);
+    
+        if (passwordInput && togglePassword) {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                togglePassword.innerHTML = '<i class="fa-solid fa-eye-slash"></i>'; // Font Awesome eye-slash icon
+            } else {
+                passwordInput.type = 'password';
+                togglePassword.innerHTML = '<i class="fa-solid fa-eye"></i>'; // Font Awesome eye icon
+            }
         } else {
-            passwordInput.type = 'password';
-            togglePassword.innerHTML = '<i class="fa-solid fa-eye"></i>'; // Font Awesome eye icon
+            console.log('Password input or toggle button not found.');
+            // Handle the case when the elements with the specified IDs are not found
         }
     }
 

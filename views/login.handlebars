@@ -15,12 +15,12 @@
                 <input type="password" id="password" name="password" class="mt-1 p-2 w-full border-2 bg-gray-100 rounded-lg focus:outline-none
                     {{#if errors.invalid_pass}} focus:border-red-500 {{else}} focus:border-blue-700 {{/if}}"
                     value="{{password}}">
-                    <span id="togglePassword" class="absolute top-3 right-3 cursor-pointer" onclick="togglePasswordVisibility()">
+                    <span id="togglePassword" class="absolute top-3 right-3 cursor-pointer" onclick="togglePasswordVisibility('password', 'togglePassword')">
                         <i class="fa-solid fa-eye"></i>
                     </span>
             </div>
 
-            <p id="passwordError" class="h-6 text-red-600 text-xs">{{errors.invalid_pass}}</p>
+            <p id="passwordError" class="h-6 text-red-600 text-sm">{{errors.invalid_pass}}</p>
         </div>
 
         <button type="submit" class="bg-blue-600 text-white text-lg px-6 py-3 rounded-lg transition duration-300 ease-in-out hover:bg-blue-400">Login</button>
@@ -34,3 +34,15 @@
 </div>
 
 <script src="/js/check.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Check for the success message
+        var successMsg = "{{successMsg}}";
+
+        if (successMsg) {
+            // Show a pop-up or a modal here
+            alert(successMsg);
+        }
+    });
+</script>

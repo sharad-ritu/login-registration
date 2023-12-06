@@ -14,12 +14,12 @@
                 <label for="password" class="block text-md font-medium text-gray-600">Password</label>
                 <div class="relative">
                     <input type="password" id="password" name="password" class="mt-1 p-2 w-full border-2 bg-gray-100 rounded-lg focus:outline-none focus:border-blue-700"
-                        oninput="validateInput(this)" value="{{password}}" autocomplete="new-password">
-                    <span id="togglePassword" class="absolute top-3 right-3 cursor-pointer" onclick="togglePasswordVisibility()">
+                        oninput="validateInput(this)" value="{{password}}">
+                    <span id="togglePassword" class="absolute top-3 right-3 cursor-pointer" onclick="togglePasswordVisibility('password', 'togglePassword')">
                         <i class="fa-solid fa-eye"></i>
                     </span>
                 </div>
-                <p id="passwordError" class="h-6 text-red-600 text-xs"></p>
+                <p id="passwordError" class="h-6 text-red-600 text-sm"></p>
             </div>
 
             <div class="mb-4">
@@ -44,3 +44,15 @@
     </div>
 
 <script src="/js/check.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Check for the success message
+        var successMsg = "{{successMsg}}";
+
+        if (successMsg) {
+            // Show a pop-up or a modal here
+            alert(successMsg);
+        }
+    });
+</script>

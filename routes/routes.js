@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {
-    loginForm, 
+const { 
     loginProcess, 
     registerForm, 
     registerProcess,
